@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+ 
+
+
+
+	<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width-device-width, initial-scale = 1.0">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" href="">
+	<title>Cineseek</title>
+	</head>
+	
+	<body>
+	
+		<div class="p-5 bg-danger text-white text-center">
+		  <h1 style="font-size:300%;" id = "header">Cineseek</h1>
+		  <p><em>Your source for unlimited movie information</em></p> 
+		</div>
+		<br>
+		<div class="row justify-content-center">
+			<div class="col-4">
+				<div>
+					<br>
+					<label for="input">Enter movie name : </label><br>
+					<input type="text"  id="searchInput" name = "input" onclick = "disableSelect()"/>
+					<input type="button" onclick ="movieResults()"  id="submit_input" value ="Submit"/>
+				</div>
+				
+				<br>
+			<div>
+				<label for="movie_drop">Select Movie : </label><br>
+					<select id="movie_drop" onclick ="disableInput()">
+						<option selected="selected" value ="Star Wars" >Star Wars</option>
+						<option value = "The Empire Strikes Back">The Empire Strikes Back</option>
+						<option value ="Return of the Jedi">Return of the Jedi</option>
+					</select>
+				
+				<input type="button"  onclick = "displaySelect()"  id="submit_drop" value ="Submit" />
+				<img src="clapper.png" id="clapper" name="image"/>
+			</div>
+				
+			</div>
+			<div class="col-4">
+				 <div class="container">
+				 <br>
+					<h1 id="movieTitle"></h1>
+					<img src="" id="moviePoster" name="image"/>
+					<br>
+					<br>
+					<p id="moviePlot" name = "plot"></p>
+					
+					<br>
+					<div id="movieDirector"></div>
+					<br>
+					<div id="movieActors"></div>
+					<br>
+				</div>
+		
+		
+			</div>
+		 </div>
+
+		
+		
+		
+			<script>
+				//variables for movie categories
+				
+				var dataTitle;
+				var dataDirector;
+				var dataPlot;
+				var dataActors;
+				var dataPoster;
+				
+				//Disable Input Box
+				function disableInput(){
+					document.getElementById("searchInput").disabled = true;
+					document.getElementById("submit_input").disabled = true;
+					
+					}
+				
+				//Disable Dropdown	
+				function disableSelect(){
+					document.getElementById("movie_drop").disabled = true;
+					document.getElementById("submit_drop").disabled = true;
+					}
+					
+					
+					document.getElementById('submitID').disabled = true; //Disable at first
+
+
+				
+				
+				//Get movie info for input
+				function movieResults(){
+					var movieName =document.getElementById("searchInput").value;
+					
+					fetch('http://www.omdbapi.com/?&apikey=37c7c10d&t='+movieName+'&y=&plot=full&r=json')
+					//fetch('http://www.omdbapi.com/?&apikey=37c7c10d&t=star+wars&y=&plot=full&r=json')
+					.then(function(response) {return response.json();})
+					.then(function(json) {
+						dataTitle = json.Title
+						dataDirector = json.Director
+						dataPlot = json.Plot;
+						dataActors = json.Actors;
+						dataPoster = json.Poster;
+						
+						document.getElementById('movieTitle').innerHTML = dataTitle;
+						document.getElementById('moviePlot').innerHTML =  "<h5>Plot: </h5>" + dataPlot;
+						document.getElementById('movieDirector').innerHTML = "<h5>Director: </h5>" + dataDirector;
+						document.getElementById('movieActors').innerHTML = "<h5>Cast: </h5>" + dataActors;
+						document.getElementById('moviePoster').src = dataPoster;
+						
+						
+					});	
+					//alert(dataPlot);
+				}
+				
+				
+                //Get movie info for dropdown
+				function displaySelect(){
+					var movieName2 =document.getElementById("movie_drop").value;
+					
+					
+					fetch('http://www.omdbapi.com/?&apikey=37c7c10d&t='+movieName2+'&y=&plot=full&r=json')
+					//fetch('http://www.omdbapi.com/?&apikey=37c7c10d&t=star+wars&y=&plot=full&r=json')
+					.then(function(response) {return response.json();})
+					.then(function(json) {
+						dataTitle = json.Title
+						dataDirector = json.Director
+						dataPlot = json.Plot;
+						dataActors = json.Actors;
+						dataPoster = json.Poster;
+						
+						document.getElementById('movieTitle').innerHTML = dataTitle;
+						document.getElementById('moviePlot').innerHTML = "<h5>Plot: </h5>" + dataPlot;
+						document.getElementById('movieDirector').innerHTML = "<h5>Director: </h5>" + dataDirector;
+						document.getElementById('movieActors').innerHTML = "<h5>Cast: </h5>" + dataActors;
+						document.getElementById('moviePoster').src = dataPoster;
+						
+						
+					});	
+				
+				}
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	</body>
+</html>
+
